@@ -1,15 +1,15 @@
 ZoomMtg.preLoadWasm()
 ZoomMtg.prepareWebSDK()
 
-var authEndpoint = ''
-var sdkKey = ''
-var meetingNumber = '123456789'
-var passWord = ''
+var authEndpoint = 'http://localhost:4000/zoom_auth_jwt'
+var sdkKey = '4EvPaJwQTl6lpYmcAeqFg'
+var meetingNumber = '93362050842'
+var passWord = '123456'
 var role = 0
 var userName = 'JavaScript'
 var userEmail = ''
 var registrantToken = ''
-var zakToken = ''
+var zakToken = '0Oquh1v2RmjFTsFQjgSRPyvJDjFr4yeBA'
 var leaveUrl = 'https://zoom.us'
 
 function getSignature() {
