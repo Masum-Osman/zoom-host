@@ -6,11 +6,11 @@ var sdkKey = '4EvPaJwQTl6lpYmcAeqFg'
 var meetingNumber = '93362050842'
 var passWord = '123456'
 var role = 0
-var userName = 'JavaScript'
-var userEmail = ''
+var userName = '65b0d02d60023489a81394db'
+var userEmail = 'masum@gmail.com'
 var registrantToken = ''
-var zakToken = '0Oquh1v2RmjFTsFQjgSRPyvJDjFr4yeBA'
-var leaveUrl = 'https://zoom.us'
+var zakToken = 'aDFImFLu0idYeKfnun-TSKg517Sg0Ff8g'
+var leaveUrl = 'http://127.0.0.1:5500/'
 
 function getSignature() {
   fetch(authEndpoint, {
@@ -51,8 +51,9 @@ function startMeeting(signature) {
         userEmail: userEmail,
         tk: registrantToken,
         zak: zakToken,
+        customerKey: "masumid",
         success: (success) => {
-          console.log(success)
+          console.log("success-------", success)
         },
         error: (error) => {
           console.log(error)
