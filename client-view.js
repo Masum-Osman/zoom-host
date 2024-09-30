@@ -4,16 +4,16 @@ ZoomMtg.prepareWebSDK()
 var authEndpoint = 'http://localhost:4000/zoom_auth_jwt'
 var sdkKey = '4EvPaJwQTl6lpYmcAeqFg'
 var meetingNumber = '93362050842'
+// var meetingNumber = '97057314707'
 var passWord = '123456'
 var role = 1
-var userName = '65b0d02d60023489a81394db'
+var userName = 'Host'
 var userEmail = 'masum@gmail.com'
 var registrantToken = ''
 var zakToken = 'aDFImFLu0idYeKfnun-TSKg517Sg0Ff8g'
-var leaveUrl = 'http://127.0.0.1:5500/'
+var leaveUrl = 'http://127.0.0.1:5501/'
 
 function getSignature() {
-  console.log("PROCESS ENV::: ", process.env.AUTH_API_ENDPOINT);
   fetch(authEndpoint, {
     method: 'POST',
     headers: {
@@ -54,7 +54,7 @@ function startMeeting(signature) {
         customerKey: "masumid",
         success: (success) => {
           console.log("success-------", success)
-          createBreakoutRooms()
+          createAndOpenBreakoutRooms()
         },
         error: (error) => {
           console.log(error)
@@ -67,32 +67,28 @@ function startMeeting(signature) {
   })
 }
 
-function createBreakoutRooms() {
-  const roomNames = ['Room 1', 'Room 2']; // Define the names of the breakout rooms
+function createAndOpenBreakoutRooms() {
+  const roomNames = ["room_1", "room_2", "room_3", "room_4"];
 
   ZoomMtg.createBreakoutRoom({
     data: roomNames,
     success: (response) => {
       console.log("Breakout rooms created successfully", response);
-      if (Array.isArray(response.rooms)) {
-        response.rooms.forEach((room) => {
-          breakoutRoomIds[room.name] = room.roomId; 
-        });
-      } else {
-        console.error("Response does not contain rooms array:", response);
-      }
-      // openBreakoutRooms(); 
+      openBreakoutRooms();
     },
     error: (error) => {
       console.error("Failed to create breakout rooms:", error);
     }
   });
 }
+
+
 function openBreakoutRooms() {
   ZoomMtg.openBreakoutRooms({
-    success: () => {
-      console.log("Breakout rooms opened successfully");
-      joinBreakoutRoom(breakoutRoomIds["Room 1"]); // Join the user to Room 1
+    success: (openBreakoutRooms) => {
+      console.log("Breakout Room IDs:", ); 
+      console.log("Breakout rooms opened successfully: ", openBreakoutRooms);
+      getBreakOutRooms()
     },
     error: (error) => {
       console.error("Failed to open breakout rooms:", error);
@@ -100,17 +96,25 @@ function openBreakoutRooms() {
   });
 }
 
-function joinBreakoutRoom(roomId) {
-  ZoomMtg.joinBreakoutRoom({
-    roomId: roomId,
-    success: () => {
-      console.log(`Successfully joined the breakout room: ${roomId}`);
+function getBreakOutRooms() {
+  ZoomMtg.getBreakoutRooms({
+    success: (rooms) => {
+      console.log("Breakout Rooms from ZoomMtg.getBreakoutRooms(): ", rooms);
+      // if (Array.isArray(rooms) && rooms.length > 0) {
+      //   rooms.forEach(room => {
+      //     console.log(`Room ID: ${room.roomId}, Room Name: ${room.name}`);
+      //   });
+      // } else {
+      //   console.log("No breakout rooms found.");
+      // }
+      
     },
     error: (error) => {
-      console.error("Failed to join breakout room:", error);
+      console.error("Failed to get breakout rooms:", error);
     }
   });
 }
+
 
 function createAndJoinMeeting() {
   fetch('http://localhost:4000/create_meeting', {
